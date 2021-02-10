@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class ChairCommunication: MonoBehaviour {
     public int chairNum;
-    public int chairStage;
     public KeyCode[] keyDirection = {KeyCode.A, KeyCode.S};
     
     private float[] pitchThreshold = {8f, 1f}; // 0 = forward | 1 = back
@@ -22,6 +21,7 @@ public class ChairCommunication: MonoBehaviour {
         for(int i=0; i < keyDirection.Length; i++){
             if (Input.GetKeyDown(keyDirection[i])) {
                 AnimationControl.S.GetChairInput(chairNum, i);
+                AudioControl.S.ChairControlledSound(chairNum, i);
             }
         }
     }
