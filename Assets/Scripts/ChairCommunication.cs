@@ -7,7 +7,7 @@ public class ChairCommunication: MonoBehaviour {
     public int chairNum;
     public KeyCode[] keyDirection = {KeyCode.A, KeyCode.S};
     
-    private float[] pitchThreshold = {8f, 1f}; // 0 = forward | 1 = back
+    public float[] pitchThreshold = {8f, 1f}; // 0 = forward | 1 = back
     private float[] medianPitch = {-77f, -74f};
     
     public float pitch;
@@ -37,6 +37,7 @@ public class ChairCommunication: MonoBehaviour {
                 acceptingFront = true;
                 // Tell Controller to Do Something
                 AnimationControl.S.GetChairInput(chairNum, direction);
+                AudioControl.S.ChairControlledSound(chairNum, direction);
             }
         }
 

@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Breathing : MonoBehaviour {
-    private float                size, ogSize, maxSize;
+    public float[]              stageSizes;
     
+    private float               size, ogSize;
+    private int                 currStage;
+    private int                 chairNum;
+
     private bool                rocking;
     private float               timePassed;
-    private float               delayTime = 2f;
+    private float               delayTime = 4f;
     private float               startTime;
     
     
@@ -18,30 +22,44 @@ public class Breathing : MonoBehaviour {
         size = 0.1f;
         ogSize = size;
         startTime = 0;
-        maxSize = 2f;
+        currStage = 0;
+        chairNum = this.transform.GetSiblingIndex();
     }
 
     void FixedUpdate() {
         timePassed = Time.time - startTime;
         
-        if (timePassed >= delayTime && size >= 0.25f) {
+        if (timePassed >= delayTime) {
+            rocking = false;
+            startTime = Time.time;
+            // took too long, reset the game clock
+            GameManager.S.ResetClock();
+            AudioControl.S.Reset();
+        }
+        
+        // Start shrinking if not rocking 
+        if (!rocking && size >= 0.25f) {
             size -= .001f;
             this.transform.localScale = new Vector3(size, size, this.transform.localScale.z);
         }
 
-        AudioControl.S.backStrum[transform.GetSiblingIndex()].volume = (size - .25f);
-
+        AudioControl.S.backStrum[chairNum].volume = (size - .125f);
     }
     
     
     public IEnumerator Increase() {
+        rocking = true;
         startTime = Time.time;
-        float increaseSize = Random.Range(0.025f, 0.075f);
+        float increaseSize = Random.Range(0.0075f, 0.0125f);
         float newSize      = size + increaseSize;
 
-        if (newSize >= maxSize) {
-            AnimationControl.S.chairState++;
-        }
+        // Advance chair state based on circle size
+        // implement if change that moons no longer remain for duration of experience
+        // if (newSize >= stageSizes[currStage]) {
+        //     AnimationControl.S.chairState++;
+        //     Debug.Log(AnimationControl.S.chairState);
+        // }
+        
         while (size < newSize) {
             size += .005f;
             this.transform.localScale = new Vector3(size, size, this.transform.localScale.z); 

@@ -57,22 +57,32 @@ public class AnimationControl : MonoBehaviour {
 	// }
 
 	// Stage-based strategy
+	
+	// Chair input controls guitar plucks
 	public void GetChairInput(int chairNum, int chairDirection) {
-		switch (GameManager.S.gameStage) {
-			case 0:
-				// Animate the moons via the Breathing Script
-				// Breathing script advances the Stage when complete
-				Breathing b = moons[chairNum].GetComponent<Breathing>();
-				b.StartCoroutine("Increase");
-				// both chairs have filled in their sky
-				if (chairState >= 2) {
-					SetTheStage(1);
-				}
-				return;
-			case 1:
-				// Show the full tree image for X seconds
-				return;
-		}
+		// Moon animation last the entirety of the experience
+		Breathing b = moons[chairNum].GetComponent<Breathing>();
+		b.StartCoroutine("Increase");
+		
+		// switch (GameManager.S.gameStage) {
+		// 	case 0:
+		// 		// Animate the moons via the Breathing Script
+		// 		// Breathing script advances the Stage when complete
+		// 		Breathing b = moons[chairNum].GetComponent<Breathing>();
+		// 		b.StartCoroutine("Increase");
+		// 		// both chairs have filled in their sky
+		// 		if (chairState >= 2) {
+		// 			SetTheStage(1);
+		// 		}
+		// 		return;
+		// 	case 1:
+		// 		// Show the full tree image for X seconds
+		// 		return;
+		// }
+	}
+
+	public void LaunchStage(int stage) {
+		
 	}
 
 	public void SetTheStage(int nextGameStage) {
